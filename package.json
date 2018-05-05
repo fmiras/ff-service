@@ -5,6 +5,8 @@
   "author": "fmiras",
   "license": "MIT",
   "scripts": {
+    "start": "micro",
+    "dev": "micro-dev",
     "lint": "xo",
     "precommit": "lint-staged",
     "test": "npm run lint && ava"
@@ -23,8 +25,13 @@
     "ava": "0.25.0",
     "husky": "0.14.3",
     "lint-staged": "7.0.5",
+    "micro-dev": "2.2.2",
     "prettier": "1.12.1",
     "rewire": "4.0.1",
     "xo": "0.20.3"
+  },
+  "dependencies": {
+    "micro": "9.3.0",
+    "micro-validate": "1.0.2"
   }
 }
