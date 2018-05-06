@@ -31,7 +31,12 @@ const setFeatures = async customer => {
 }
 
 const createCustomer = async customer => {
-  return repository.save(customer)
+  const { ops } = await repository.save(customer)
+  const result = {
+    customerId: ops[0].customerId,
+    features: ops[0].features
+  }
+  return result
 }
 
 module.exports = { getFeatures, addFeatures, setFeatures, createCustomer }
