@@ -15,17 +15,29 @@ const find = async query => {
   return result.features
 }
 
-const update = async ({ customerId, features }) => {
+const save = async ({ customerId, features }) => {
   const connection = await MongoClient.connect(MONGO_URL)
   const db = connection.db(MONGO_DB)
   const collection = db.collection('customers')
-  const result = await collection.update(
-    { customerId },
-    { $set: { features } },
-    { upsert: true }
-  )
+  let result
+  if (customerId) {
+    result = await collection.update(
+      { customerId },
+      { $set: { features } },
+      { upsert: true }
+    )
+  } else {
+    const last = await collection.findOne(
+      {},
+      { sort: [['customerId', 'desc']] }
+    )
+    result = await collection.insert({
+      customerId: last.customerId + 1,
+      features
+    })
+  }
   connection.close()
   return result
 }
 
-module.exports = { find, update }
+module.exports = { find, save }

@@ -3,9 +3,14 @@ const { parse } = require('url')
 const { json, createError } = require('micro')
 const validate = require('micro-validate')
 const cache = require('micro-cacheable')
-const { router, get, patch, put } = require('microrouter')
+const { router, get, patch, put, post } = require('microrouter')
 
-const { getFeatures, addFeatures, setFeatures } = require('./service')
+const {
+  getFeatures,
+  addFeatures,
+  setFeatures,
+  createCustomer
+} = require('./service')
 
 const { CACHE_TIME } = process.env
 
@@ -49,10 +54,16 @@ const setFeaturesHandler = async req => {
   return update(req, true)
 }
 
+const createCustomerHandler = async req => {
+  const customer = await json(req)
+  return createCustomer(customer)
+}
+
 const microFn = router(
   get('/:id', getFeaturesHandler),
   patch('/:id', addFeaturesHandler),
-  put('/:id', setFeaturesHandler)
+  put('/:id', setFeaturesHandler),
+  post('/', createCustomerHandler)
 )
 
 module.exports = cache(CACHE_TIME, microFn)
