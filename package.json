@@ -12,7 +12,8 @@
     "test": "npm run lint && ava"
   },
   "xo": {
-    "extends": "prettier"
+    "extends": "prettier",
+    "ignores": [ "database-example.js"]
   },
   "lint-staged": {
     "*.js": [
