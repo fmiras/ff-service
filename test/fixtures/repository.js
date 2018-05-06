@@ -1,4 +1,4 @@
-const find = () => {
+const find = async () => {
   return {
     logging: '2.1.0',
     roles: '1.7.0',
