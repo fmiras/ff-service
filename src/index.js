@@ -2,10 +2,13 @@ require('dotenv').config()
 const { parse } = require('url')
 const { createError } = require('micro')
 const validate = require('micro-validate')
+const cache = require('micro-cacheable')
 
 const getFeatures = require('./service')
 
-module.exports = async req => {
+const { CACHE_TIME } = process.env
+
+const microFn = async req => {
   const { query, pathname } = parse(req.url, true)
   const id = Number(pathname.substring(1)) // Remove '/' from pathname
   let featuresQuery
@@ -20,3 +23,5 @@ module.exports = async req => {
   }
   return features
 }
+
+module.exports = cache(CACHE_TIME, microFn)
