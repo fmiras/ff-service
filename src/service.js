@@ -1,7 +1,7 @@
 const repository = require('./repository')
 
-module.exports = (customerId, requestedFeaturesNames) => {
-  const features = repository.find({ customerId, requestedFeaturesNames })
+module.exports = async (customerId, requestedFeaturesNames) => {
+  const features = await repository.find({ customerId })
   if (!requestedFeaturesNames) {
     return features
   }
