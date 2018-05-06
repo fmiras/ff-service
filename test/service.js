@@ -1,10 +1,11 @@
 const test = require('ava')
 const rewire = require('rewire')
 
-const getFeatures = rewire('../src/service')
+const service = rewire('../src/service')
 const repository = require('./fixtures/repository')
 
-getFeatures.__set__('repository', repository)
+service.__set__('repository', repository)
+const { getFeatures } = service
 
 test('getFeatures of costumer with logging and roles features enabled', async t => {
   const customerId = 1
