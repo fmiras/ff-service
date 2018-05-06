@@ -13,17 +13,21 @@ const getFeatures = async (customerId, requestedFeaturesNames) => {
   return result
 }
 
-const setFeatures = async customer => {
+const addFeatures = async customer => {
   const features = await getFeatures(customer.customerId)
   Object.keys(customer.features).forEach(sFeature => {
     features[sFeature] = customer.features[sFeature]
   })
-  console.log(features)
   const result = await repository.update({
     customerId: customer.customerId,
     features
   })
-  return result
+  return result.nModified !== 0
 }
 
-module.exports = { getFeatures, setFeatures }
+const setFeatures = async customer => {
+  const result = await repository.update(customer)
+  return result.nModified !== 0
+}
+
+module.exports = { getFeatures, addFeatures, setFeatures }
