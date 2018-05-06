@@ -13,7 +13,7 @@
   },
   "xo": {
     "extends": "prettier",
-    "ignores": [ "database-example.js"]
+    "ignores": "**/database-example.js"
   },
   "lint-staged": {
     "*.js": [
