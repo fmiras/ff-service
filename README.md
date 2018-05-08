@@ -42,7 +42,7 @@ Response:
 }
 ```
 
-Return state of specific flags (version number if set or false if latest version)
+Return state of specific features (version number if set or false if latest version)
 
 GET `http://localhost:3000/1?query=logging,roles,mfa`
 
@@ -61,7 +61,7 @@ Create a customer:
 
 POST `http://localhost:3000`
 
-Request Body:
+Request body:
 ```json
 {
   "features": {
@@ -79,3 +79,54 @@ Response:
     }
 }
 ```
+
+#### Editing customers
+
+Add or edit existing features to a customer:
+
+PATCH `http://localhost:3000/1`
+
+Request body:
+```json
+{
+  "features": {
+    "roles": "1.0.1"
+  }
+}
+```
+
+Response:
+```json
+{
+    "customerId": 1,
+    "features": {
+        "logging": "2.1.0",
+        "roles": "1.0.1",
+        "sms": "3.0.0"
+    }
+}
+```
+
+Replace existing features of customer:
+
+PUT `http://localhost:3000/1`
+
+Request body:
+```json
+{
+  "features": {
+    "roles": "1.0.1"
+  }
+}
+```
+
+Response:
+```json
+{
+    "customerId": 1,
+    "features": {
+        "roles": "1.0.1"
+    }
+}
+```
+
