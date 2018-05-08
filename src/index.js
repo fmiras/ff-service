@@ -32,18 +32,13 @@ const getFeaturesHandler = async req => {
 
 const update = async (req, override) => {
   const { pathname } = parse(req.url, true)
-  const customer = await json(req)
-  console.log(customer)
+  const { features } = await json(req)
   const id = Number(req.params.id)
   const message = `The pathname ${pathname} must be a customer ID (number).`
   validate({ id }, p => Number.isInteger(p), message)
-  const updated = override
-    ? await setFeatures(customer)
-    : await addFeatures(customer)
-  if (updated) {
-    return 'Operation successfully completed.'
-  }
-  createError(409, 'Operation failed.')
+  return override
+    ? setFeatures({ customerId: id, features })
+    : addFeatures({ customerId: id, features })
 }
 
 const addFeaturesHandler = async req => {

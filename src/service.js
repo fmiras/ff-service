@@ -18,25 +18,42 @@ const addFeatures = async customer => {
   Object.keys(customer.features).forEach(sFeature => {
     features[sFeature] = customer.features[sFeature]
   })
-  const result = await repository.save({
+
+  const newCustomer = {
     customerId: customer.customerId,
     features
-  })
-  return result.nModified !== 0
+  }
+
+  const result = await repository.save(newCustomer)
+
+  if (result.nModified !== 0) {
+    return newCustomer
+  }
+
+  throw new Error(
+    `There was a problem updating the customer ${
+      newCustomer.customerId
+    } features`
+  )
 }
 
 const setFeatures = async customer => {
   const result = await repository.save(customer)
-  return result.nModified !== 0
+  if (result.nModified !== 0) {
+    return customer
+  }
+
+  throw new Error(
+    `There was a problem updating the customer ${customer.customerId} features`
+  )
 }
 
 const createCustomer = async customer => {
   const { ops } = await repository.save(customer)
-  const result = {
+  return {
     customerId: ops[0].customerId,
     features: ops[0].features
   }
-  return result
 }
 
 module.exports = { getFeatures, addFeatures, setFeatures, createCustomer }
