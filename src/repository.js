@@ -2,6 +2,11 @@ const { MongoClient } = require('mongodb')
 
 const { MONGO_URL, MONGO_DB } = process.env
 
+const clearCache = (customerId, db) => {
+  const collection = db.collection('responses')
+  return collection.remove({ data: { customerId } })
+}
+
 const find = async query => {
   const connection = await MongoClient.connect(MONGO_URL)
   const db = connection.db(MONGO_DB)
@@ -36,6 +41,7 @@ const save = async ({ customerId, features }) => {
       features
     })
   }
+  await clearCache(result.customerId, db)
   connection.close()
   return result
 }
